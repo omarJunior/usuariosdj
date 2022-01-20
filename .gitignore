@@ -1,0 +1,14 @@
+*.pyc
+migrations
+media
+*.sqlite3
+.DS_Store
+env
+files
+.vscode
+Pipfile
+Pipfile.lock
+firmados
+compliancefiles
+uploads
+secret.json
