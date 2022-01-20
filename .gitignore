@@ -11,4 +11,4 @@ Pipfile.lock
 firmados
 compliancefiles
 uploads
-secret.json
+usuarios/secret.json
