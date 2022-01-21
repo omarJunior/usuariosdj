@@ -48,7 +48,11 @@ DJANGO_APPS = (
     'django.contrib.staticfiles',
 )
 
-LOCAL_APPS = ()
+#Aplicaciones locales 
+LOCAL_APPS = (
+    'applications.home',
+    'applications.users',
+)
 
 THIRD_PARTY_APPS = ()
 
@@ -106,6 +110,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+#Trabajaremos con un nuevo modelo de usuarios
+AUTH_USER_MODEL = 'users.User'
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
