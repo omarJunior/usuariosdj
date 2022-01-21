@@ -37,3 +37,31 @@ class UserRegisterForm(forms.ModelForm):
             if len(password1) <= 3 and len(password2) <= 3:
                 self.add_error('password2', 'Las contraseñas deben ser mayor a 3 caracteres')
         
+
+#Formulario que no se base en un modelo
+class LoginForm(forms.Form):
+    """LoginForm definition."""
+    
+    username = forms.CharField(
+        label= 'Username',
+        required= True,
+        widget= forms.TextInput(
+            attrs = {
+                'placeholder': 'Username',
+                'style': '{margin: 10px}',
+            }
+        )
+    )
+
+    password = forms.CharField(
+        label= 'Contraseña',
+        required= True,
+        widget= forms.PasswordInput(
+            attrs = {
+                'placeholder': 'Contraseña',
+                'style': '{margin: 10px}',
+            }
+        )
+    )
+    
+    
