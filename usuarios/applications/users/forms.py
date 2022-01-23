@@ -1,6 +1,7 @@
 
 from django import forms
 from .models import User
+from django.contrib.auth import authenticate
 
 class UserRegisterForm(forms.ModelForm):
     
@@ -38,7 +39,7 @@ class UserRegisterForm(forms.ModelForm):
                 self.add_error('password2', 'Las contraseñas deben ser mayor a 3 caracteres')
         
 
-#Formulario que no se base en un modelo
+#Formulario que no se basa en un modelo
 class LoginForm(forms.Form):
     """LoginForm definition."""
     
@@ -63,5 +64,60 @@ class LoginForm(forms.Form):
             }
         )
     )
+
+    #Validacion del formulario de login
+    def clean(self):
+        cleaned_data = super(LoginForm, self).clean()
+        username = self.cleaned_data['username']
+        password = self.cleaned_data['password']
+        if not authenticate(username = username, password = password):
+            raise forms.ValidationError('Los datos del usuario no son correctos')
+        return cleaned_data
+        
+            
+        
+class UpdatePasswordForm(forms.Form):
     
+    password1 = forms.CharField(
+        label= 'Contraseña',
+        required= True,
+        widget= forms.PasswordInput(
+            attrs = {
+                'placeholder': 'Contraseña actual',
+                'style': '{margin: 10px}',
+            }
+        )
+    )
+    password2 = forms.CharField(
+        label= 'Contraseña',
+        required= True,
+        widget= forms.PasswordInput(
+            attrs = {
+                'placeholder': 'Contraseña nueva',
+                'style': '{margin: 10px}',
+            }
+        )
+    )
+
+
+class VerificationForm(forms.Form):
+    codregistro = forms.CharField(
+        label= 'Codigo confirmacion',
+        required= True
+    )    
     
+    def __init__(self, pk, *args, **kwargs):
+        self.id_user = pk
+        super(VerificationForm, self).__init__(*args, **kwargs)
+    
+
+    def clean_codregistro(self):
+        codigo = self.cleaned_data['codregistro']
+        if len(codigo) == 6:
+            #Verificamos si el codigo y el id del usuario son validos
+            activo = User.objects.cod_validation(self.id_user, codigo)
+            if not activo:
+                raise forms.ValidationError('El codigo es incorrecto')
+        else:
+            raise forms.ValidationError('El codigo es incorrecto')
+            
